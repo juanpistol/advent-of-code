@@ -1,10 +1,10 @@
 import {processData} from '../FileReader.mjs'
 
-function checkWinner(cards, matchIndeces){
+function checkWinner(cards){
     for(let cardIndex = 0; cardIndex<cards.length;cardIndex++) {
         for(let i=0; i<5; i++){
-            let rowMatches = matchIndeces.filter(match => match.card == cardIndex && match.row == i ).length
-            let colMatches = matchIndeces.filter(match => match.card == cardIndex && match.col == i ).length
+            let rowMatches = cards[cardIndex][i].filter(x => !x ).length
+            let colMatches = cards[cardIndex].filter(row => !row[i]).length
             
             if(colMatches >= 5 || rowMatches >= 5){
                 console.log(`THERE SHOULD BE A WINNER:  CardIndex: ${cardIndex}`)
@@ -48,7 +48,6 @@ processData('day-4-input.txt').then(inputArr => {
 
     console.log(`${cards.length} total cards`)
 
-    let matchIndeces = []
     let winningCardIndex = null
     let winningCall = null
 
@@ -59,9 +58,8 @@ processData('day-4-input.txt').then(inputArr => {
                     row.forEach((number, columnIndex) => {
                         //console.log(number == call)
                         if(number == call && winningCardIndex == null){
-                            matchIndeces.push({call: call, card: cardIndex, row: rowIndex, column: columnIndex})
-                            winningCardIndex = checkWinner(cards, matchIndeces)
                             cards[cardIndex][rowIndex][columnIndex] = ""
+                            winningCardIndex = checkWinner(cards)
                         }
                     })
                 })
@@ -75,9 +73,6 @@ processData('day-4-input.txt').then(inputArr => {
     })
 
     let answer = calculateAnswer(cards[winningCardIndex], winningCall)
-    console.log("----------------------------")
-    console.log(matchIndeces.filter( x=> x.card==winningCardIndex))
-    console.log("----------------------------")
 
     console.log(`Answer: ${answer}`)
 })
