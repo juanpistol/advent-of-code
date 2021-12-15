@@ -5,11 +5,11 @@ processData('day-5-input.txt').then(inputArr => {
   
   let lineClasses = convolutedLines.map(line => new Line(parseInt(line[0][0]), parseInt(line[0][1]), parseInt(line[1][0]), parseInt(line[1][1])))
 
-  let desiredLines = lineClasses.filter(line => { return line.isHorizontalOrVertical() });
+  let desiredLines = lineClasses;
 
   let linePassthroughs = desiredLines.map(line => { return line.getPassThroughCoords() });
 
-  // console.log(linePassthroughs)
+  //console.log(linePassthroughs)
 
   let maxX = Math.max(...[...lineClasses.map(line => line.greaterX())])
   let maxY = Math.max(...[...lineClasses.map(line => line.greaterY())])
@@ -26,7 +26,7 @@ processData('day-5-input.txt').then(inputArr => {
 
   // console.log(grid.board)
 
-  console.log(`Num of Horizontal or Vertical Lines: ${desiredLines.length}`)
+  console.log(`Num of Lines: ${desiredLines.length}`)
 
   console.log(`Answer: ${grid.calculateOverlaps(2)}`)
 });
@@ -61,11 +61,27 @@ class Line {
 
   getPassThroughCoords = () => {
     let coords = []
-    for(let x=this.lesserX(); x<=this.greaterX(); x++){
-      for(let y=this.lesserY(); y<=this.greaterY(); y++){
-        coords.push({x, y})
+    // console.log(this.isHorizontalOrVertical() ? "horizontal/vertical" : "diagonal")
+    if(this.isHorizontalOrVertical()){
+      for(let x=this.lesserX(); x<=this.greaterX(); x++){
+        for(let y=this.lesserY(); y<=this.greaterY(); y++){
+          coords.push({x, y})
+        }
+      }
+    }else{
+      let xDiff = this.x1 - this.x2
+      let yDiff = this.y1 - this.y2
+
+      let xMultiplier = xDiff < 0 ? 1 : -1
+      let yMulitplier = yDiff < 0 ? 1 : -1
+
+      for(let i=0; i<=this.greaterX()-this.lesserX(); i++){
+        let newX = this.x1 + (i*xMultiplier)
+        let newY = this.y1 + (i*yMulitplier)
+        coords.push({x: newX, y: newY})
       }
     }
+    // console.log(coords)
     return coords
   }
 }
