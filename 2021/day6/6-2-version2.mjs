@@ -27,9 +27,9 @@ processData('day-6-input.txt').then(inputArr => {
         fishCounter.reset()
         //console.log(`Day ${day}`)
     }
-    let total = timerString.length
+    let total = Object.keys(fishCounter.object).map(key => fishCounter.object[key]).reduce((add, x)=> add+x, 0)
 
-    console.log(`Answer for ${days} days: ${Object.keys(fishCounter.object).map(key => fishCounter.object[key]).reduce((add, x)=> add+x, 0)}`)
+    console.log(`Answer for ${days} days: ${total}`)
 });
 
 class FishCounter {
