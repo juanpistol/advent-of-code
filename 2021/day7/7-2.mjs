@@ -1,6 +1,6 @@
 import {processData} from '../FileReader.mjs'
 
-processData('day-7-test-input.txt').then(inputArr => {  
+processData('day-7-input.txt').then(inputArr => {  
     let crabs = inputArr[0].split(',').map(x => parseInt(x)+1)
     
     let occurrences = crabs.reduce(function (acc, curr) {
@@ -23,7 +23,7 @@ processData('day-7-test-input.txt').then(inputArr => {
 
     let median = crabs.reduce((a,b) => a+b) / (crabs.length/2)
     
-    let target = Math.floor((median+mode)/2)
+    let target = Math.round(weightedTotal/crabs.length)
 
     console.log(`Mode: ${mode}`)
     console.log(`Median: ${median}`)
